@@ -1,35 +1,35 @@
 package application;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import db.DB;
 
 public class Program {
-
 	public static void main(String[] args) {
 		
 		Connection conn = null;
-		Statement st = null;
+		PreparedStatement st = null;
 		ResultSet rs = null;
 		
 		try {
 			conn = DB.openConnection();
-			st = conn.createStatement();
 			
-			rs = st.executeQuery("SELECT * FROM DEPARTMENT");
+			st = conn.prepareStatement(""
+					+ "UPDATE SELLER "
+					+ "SET BASESALARY = BASESALARY + ?"
+					+ "WHERE (DEPARTMENTID = ?)");
+			st.setDouble(1, 500.0);
+			st.setInt(2, 2);
 			
-			while(rs.next()) {
-				System.out.println(rs.getInt("ID") + ", " + rs.getString("Name"));
-			}
+			st.executeUpdate();
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
 		finally {
-			DB.closeResultSet(rs);
 			DB.closeStatemetn(st);
 			DB.closeConnection();
 		}

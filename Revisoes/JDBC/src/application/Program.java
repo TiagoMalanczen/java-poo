@@ -1,6 +1,9 @@
 package application;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import db.DB;
 
@@ -8,13 +11,27 @@ public class Program {
 
 	public static void main(String[] args) {
 		
-		Connection conn = DB.openConnection();
+		Connection conn = null;
+		Statement st = null;
+		ResultSet rs = null;
 		
-		System.out.println("Conexao aberta com sucesso");
-		
-		DB.closeConnection();
-		
-		System.out.println("Conexao fechada com sucesso");
-
+		try {
+			conn = DB.openConnection();
+			st = conn.createStatement();
+			
+			rs = st.executeQuery("SELECT * FROM DEPARTMENT");
+			
+			while(rs.next()) {
+				System.out.println(rs.getInt("ID") + ", " + rs.getString("Name"));
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			DB.closeResultSet(rs);
+			DB.closeStatemetn(st);
+			DB.closeConnection();
+		}
 	}
 }

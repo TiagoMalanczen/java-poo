@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.util.Properties;
 
 public class DB {
+	
 	private static Connection conn = null;
 	
 	public static Connection openConnection() {
@@ -17,40 +18,28 @@ public class DB {
 			try {
 				Properties prop = loadConnection();
 				String url = prop.getProperty("dburl");
-				conn = DriverManager.getConnection(url,prop);
-			} catch (SQLException e) {
+				conn = DriverManager.getConnection(url, prop);
+			}
+			catch (SQLException e) {
 				throw new DBException(e.getMessage());
 			}
 		}
 		return conn;
 	}
-
-	public static void closeConnection(){
-		if(conn != null){
+	public static void closeConnection() {
+		if(conn != null) {
 			try {
 				conn.close();
-			}
-			catch (SQLException e) {
+			} catch (SQLException e) {
 				throw new DBException(e.getMessage());
 			}
 		}
 	}
-	private static Properties loadConnection() {
-		try (FileInputStream fs = new FileInputStream("db.properties")) {
-			Properties props = new Properties();
-			props.load(fs);
-			return props;
-		}
-		catch (IOException e) {
-			throw new DBException(e.getMessage());
-		}
-	}
-	public static void closeStatemetn(Statement st) {
+	public static void closeStatement(Statement st) {
 		if(st != null) {
 			try {
 				st.close();
-			}
-			catch (SQLException e) {
+			} catch (SQLException e) {
 				throw new DBException(e.getMessage());
 			}
 		}
@@ -59,10 +48,19 @@ public class DB {
 		if(rs != null) {
 			try {
 				rs.close();
-			}
-			catch (SQLException e) {
+			} catch (SQLException e) {
 				throw new DBException(e.getMessage());
 			}
+		}
+	}
+	private static Properties loadConnection() {
+		try(FileInputStream fs = new FileInputStream("db.properties")) {
+			Properties prop = new Properties();
+			prop.load(fs);
+			return prop;
+		}
+		catch (IOException e) {
+			throw new DBException(e.getMessage());
 		}
 	}
 }

@@ -1,19 +1,30 @@
-﻿# ☕ Orientação a Objetos 1 (Java - JDK 21)
+# Fundamentos de Java e Orientação a Objetos (JDK 21)
 
-Conteúdo prático e teórico desenvolvido durante o 2º período de ADS na UTFPR (Professor Viniccius).
+Repositório dedicado ao estudo aprofundado dos fundamentos da linguagem Java e dos pilares da Orientação a Objetos (POO). Todo o código aqui presente foi desenvolvido utilizando **Java puro (Core/SE)**, sem o uso de frameworks, com foco exclusivo em lógica, estruturas nativas e modelagem orientada a objetos.
 
-## 📂 Conteúdos Gerais
-- **Aprendizado de Novos Conteúdos:** Anotações e códigos de fixação sobre os pilares da Orientação a Objetos.
-- **Rascunhos Técnicos:** Laboratórios de lógica e protótipos.
-- **Listas de Exercícios:** Conjunto completo de atividades práticas focadas em implementação de regras de negócio.
-- **Revisoes:** Pasta voltado para revisões de assuntos ja estudados.
-
-## 🧠 Tópicos Estudados
-- **Fundamentos:** Classes, Objetos e Instanciação.
-- **Encapsulamento:** Getters, Setters e Modificadores de Acesso.
-- **Associação:** Composição e Agregação de Objetos.
-- **Coleções:** Manipulação dinâmica com `List` e `ArrayList`.
-- **Lógica de Negócio:** Métodos de busca, filtragem e cálculos de faturamento.
+Material desenvolvido durante a graduação em Análise e Desenvolvimento de Sistemas na UTFPR.
 
 ---
-*Status: Organização de pastas concluída. Pronto para Banco de Dados e Estrutura de Dados.*
+
+##Objetivo
+Consolidar a base técnica na linguagem Java, dominando a sintaxe nativa da JVM, manipulação de memória/referências e resolução de regras de negócio sem dependências de terceiros.
+
+---
+
+## Tópicos Abordados
+
+- **Sintaxe e Fundamentos da Linguagem:** Controle de fluxo, tipos primitivos, referências e utilitários da biblioteca padrão.
+- **Pilares de POO:** Abstração, encapsulamento, herança e polimorfismo.
+- **Modelagem e Relacionamentos:** Associação, agregação e composição de classes.
+- **Tratamento de Exceções:** Criação de exceções personalizadas e controle de fluxo com `try-catch`.
+- **Java Collections:** Manipulação de listas dinâmicas (`List`, `ArrayList`), buscas e iterações.
+
+---
+
+## Organização do Repositório
+
+```text
+├── aulas/        # Exemplos teóricos e códigos de fixação
+├── exercicios/   # Atividades práticas e regras de negócio
+├── revisoes/     # Códigos de consolidação
+└── rascunhos/    # Testes rápidos de lógica e protótipos

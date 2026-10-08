@@ -1,42 +1,37 @@
 package dao;
 
-public class CursoDao {
+import java.sql.Connection;
+import java.util.List;
 
-	private Integer codigo;
-	private String nome;
-	private String periodo;
-	private Integer duracao;
-	public CursoDao(Integer codigo, String nome, String periodo, Integer duracao) {
+import dto.CursoDto;
+
+public class CursoDao implements Dao<CursoDto, Integer>{
+
+	private Connection conn;
+
+	public CursoDao(Connection conn) {
 		super();
-		this.codigo = codigo;
-		this.nome = nome;
-		this.periodo = periodo;
-		this.duracao = duracao;
+		this.conn = conn;
 	}
-	public Integer getCodigo() {
-		return codigo;
+	@Override
+	public Integer cadastrar(CursoDto entidade) {
+		return null;
 	}
-	public void setCodigo(Integer codigo) {
-		this.codigo = codigo;
+	@Override
+	public List<CursoDto> buscarTodos() {
+		return null;
 	}
-	public String getNome() {
-		return nome;
+	@Override
+	public CursoDto buscarPorChave(Integer chave) {
+		return null;
 	}
-	public void setNome(String nome) {
-		this.nome = nome;
+	@Override
+	public Integer atualizar(CursoDto entidade) {
+		return null;
 	}
-	public String getPeriodo() {
-		return periodo;
+	@Override
+	public Integer excluir(Integer chave) {
+		return null;
 	}
-	public void setPeriodo(String periodo) {
-		this.periodo = periodo;
-	}
-	public Integer getDuracao() {
-		return duracao;
-	}
-	public void setDuracao(Integer duracao) {
-		this.duracao = duracao;
-	}
-	
 	
 }

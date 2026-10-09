@@ -10,17 +10,19 @@ public class AlunoDto {
 	private Date dataIngresso;
 	private Integer periodo;
 	private Double coeficiente;
+	private int codigoCurso;
+	
 	private CursoDto curso;
-	public AlunoDto(Integer registroAcademico, String nome, String sexo, Date dataIngresso, Integer periodo,
-			Double coeficiente, CursoDto curso) {
+	
+	public AlunoDto( String nome, String sexo, Date dataIngresso, Integer periodo,
+			Double coeficiente , int codigoCurso) {
 		super();
-		this.registroAcademico = registroAcademico;
 		this.nome = nome;
 		this.sexo = sexo;
 		this.dataIngresso = dataIngresso;
 		this.periodo = periodo;
 		this.coeficiente = coeficiente;
-		this.curso = curso;
+		this.codigoCurso = codigoCurso;
 	}
 	public Integer getRegistroAcademico() {
 		return registroAcademico;
@@ -48,6 +50,12 @@ public class AlunoDto {
 	}
 	public Integer getPeriodo() {
 		return periodo;
+	}
+	public int getCodigoCurso() {
+		return codigoCurso;
+	}
+	public void setCodigoCurso(int codigoCurso) {
+		this.codigoCurso = codigoCurso;
 	}
 	public void setPeriodo(Integer periodo) {
 		this.periodo = periodo;

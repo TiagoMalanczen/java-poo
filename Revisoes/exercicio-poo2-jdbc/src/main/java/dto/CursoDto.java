@@ -3,11 +3,11 @@ package dto;
 public class CursoDto {
 	private Integer codigo;
 	private String nome;
-	private String periodo;
+	private int periodo;
 	private Integer duracao;
-	public CursoDto(Integer codigo, String nome, String periodo, Integer duracao) {
+	
+	public CursoDto( String nome, int periodo, Integer duracao) {
 		super();
-		this.codigo = codigo;
 		this.nome = nome;
 		this.periodo = periodo;
 		this.duracao = duracao;
@@ -24,10 +24,10 @@ public class CursoDto {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public String getPeriodo() {
+	public int getPeriodo() {
 		return periodo;
 	}
-	public void setPeriodo(String periodo) {
+	public void setPeriodo(int periodo) {
 		this.periodo = periodo;
 	}
 	public Integer getDuracao() {

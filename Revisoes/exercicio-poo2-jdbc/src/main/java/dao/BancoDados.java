@@ -39,8 +39,8 @@ public class BancoDados {
 
 	private static Properties carregarPropriedades() throws IOException {
 
-		FileInputStream propriedadesBanco = new FileInputStream("./resources/database.properties");
-
+		FileInputStream propriedadesBanco = new FileInputStream("src/main/resources/database.properties");
+		
 		Properties props = new Properties();
 		props.load(propriedadesBanco);
 

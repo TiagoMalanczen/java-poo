@@ -36,4 +36,19 @@ public class CursoDto {
 	public void setDuracao(Integer duracao) {
 		this.duracao = duracao;
 	}
+	@Override
+	public String toString() {
+		return String.format(
+			"--------------------------------------------------\n" +
+			"  Código:   %d\n" +
+			"  Nome:     %s\n" +
+			"  Período:  %dº\n" +
+			"  Duração:  %d anos\n" +
+			"--------------------------------------------------",
+			codigo,
+			nome,
+			periodo,
+			duracao
+		);
+	}
 }

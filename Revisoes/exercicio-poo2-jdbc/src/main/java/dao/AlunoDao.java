@@ -2,10 +2,13 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import dto.AlunoDto;
+import dto.CursoDto;
 
 public class AlunoDao implements Dao<AlunoDto, Integer>{
 
@@ -45,9 +48,37 @@ public class AlunoDao implements Dao<AlunoDto, Integer>{
 
 
 	@Override
-	public List<AlunoDto> buscarTodos() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<AlunoDto> buscarTodos() throws SQLException {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			st = connection.prepareStatement("SELECT * FROM ALUNO");
+			rs = st.executeQuery();
+			
+			List<AlunoDto> listaCursos = new ArrayList<>();
+			
+			while(rs.next()) {
+				AlunoDto alunoDto = new AlunoDto(
+						rs.getString("Nome"),
+						rs.getString("Sexo"),
+						rs.getDate("Data_ingresso"),
+						rs.getInt("Periodo"), 
+						rs.getDouble("Coeficiente"), 
+						rs.getInt("Codigo_curso"));
+				alunoDto.setRegistroAcademico(rs.getInt("registro_academico"));
+				alunoDto.setCodigoCurso(rs.getInt("codigo_curso"));
+				listaCursos.add(alunoDto);
+			}
+			
+			return listaCursos;	
+			
+		}
+		finally {
+			BancoDados.finalizarResultSet(rs);
+			BancoDados.finalizarStatement(st);
+			BancoDados.desconectar();
+		}
 	}
 
 

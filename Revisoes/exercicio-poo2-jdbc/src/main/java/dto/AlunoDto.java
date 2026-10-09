@@ -74,6 +74,29 @@ public class AlunoDto {
 	}
 	
 	
-	
-	
+	@Override
+	public String toString() {
+	    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
+	    String dataFormatada = (dataIngresso != null) ? sdf.format(dataIngresso) : "N/A";
+	  
+	    return String.format(
+	        "--------------------------------------------------\n" +
+	        "  RA:           	%d\n" +
+	        "  Nome:         	%s\n" +
+	        "  Sexo:         	%s\n" +
+	        "  Data Ingresso:	%s\n" +
+	        "  Período:      	%dº\n" +
+	        "  Coeficiente:  	%.2f\n" +
+	        "  Codigo curso: 	%s\n" +
+	        "--------------------------------------------------",
+	        registroAcademico,
+	        nome,
+	        sexo,
+	        dataFormatada,
+	        periodo,
+	        coeficiente,
+	        codigoCurso
+	    );
+	}
+		
 }

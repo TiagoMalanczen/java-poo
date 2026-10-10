@@ -64,15 +64,30 @@ public class LivroDaoTeste {
 			System.out.println("Erro");
 		}	
 	}
+	static void deletar() throws SQLException, IOException {
+		Connection conn = BancoDados.conectar();
+		LivroDao dao = new LivroDao(conn);
+	
+		int linhasAfetadas = dao.excluir(2);
+		
+		if(linhasAfetadas > 0) {
+			System.out.println("Livro deletado com sucesso");
+		}
+		else {
+			System.out.println("Erro");
+		}	
+	}
+	
+	
 	
 	public static void main(String[] args)  {
 
 		try {
-//			LivroDaoTeste.cadastrarLivro();
-//			LivroDaoTeste.listarTodos();
-//			LivroDaoTeste.buscarPorChave();
+			LivroDaoTeste.cadastrarLivro();
+			LivroDaoTeste.listarTodos();
+			LivroDaoTeste.buscarPorChave();
 			LivroDaoTeste.atualizarDados();
-			
+			LivroDaoTeste.deletar();
 			
 		} 
 		catch (SQLException e) {

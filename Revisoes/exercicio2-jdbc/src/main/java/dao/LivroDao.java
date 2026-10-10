@@ -122,8 +122,20 @@ public class LivroDao implements Dao<LivroDto, Integer>{
 	}
 
 	@Override
-	public Integer excluir(Integer chave) {
-		return null;
+	public Integer excluir(Integer chave) throws SQLException {
+PreparedStatement st = null;
+		
+		try {
+			st = conn.prepareStatement("DELETE FROM LIVROS WHERE numeroIdentificador = ?");
+
+			st.setInt(1, chave);
+			
+			return st.executeUpdate();
+		} 
+		finally {
+			BancoDados.finalizarStatement(st);
+			BancoDados.desconectar();
+		}
 	}
 
 	

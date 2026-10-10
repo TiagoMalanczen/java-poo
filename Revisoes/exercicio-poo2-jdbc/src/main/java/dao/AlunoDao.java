@@ -80,7 +80,6 @@ public class AlunoDao implements Dao<AlunoDto, Integer>{
 		}
 	}
 
-
 	@Override
 	public AlunoDto buscarPorChave(Integer chave) throws SQLException {
 		PreparedStatement st = null;
@@ -111,15 +110,35 @@ public class AlunoDao implements Dao<AlunoDto, Integer>{
 		
 	}
 
-	
-	
-
 	@Override
-	public Integer atualizar(AlunoDto entidade) {
-		// TODO Auto-generated method stub
-		return null;
+	public Integer atualizar(AlunoDto entidade) throws SQLException{
+		PreparedStatement st = null;
+		
+		try {
+			st = connection.prepareStatement("UPDATE ALUNO "
+					+ "SET NOME = ?, "
+					+ "SEXO = ?, "
+					+ "DATA_INGRESSO = ?, "
+					+ "PERIODO = ?, "
+					+ "COEFICIENTE = ?, "
+					+ "CODIGO_CURSO = ?");
+			
+			st.setString(1, entidade.getNome());
+			st.setString(2, entidade.getSexo());
+			st.setDate(3, new java.sql.Date(entidade.getDataIngresso().getTime()));
+			st.setInt(4, entidade.getPeriodo());
+			st.setDouble(5, entidade.getCoeficiente());
+			st.setInt(6, entidade.getCodigoCurso());
+
+			return st.executeUpdate();
+		} 
+		finally {
+			BancoDados.finalizarStatement(st);
+			BancoDados.desconectar();
+		}
 	}
 
+	
 
 	@Override
 	public Integer excluir(Integer chave) {

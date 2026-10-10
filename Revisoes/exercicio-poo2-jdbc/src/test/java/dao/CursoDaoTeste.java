@@ -38,7 +38,6 @@ public class CursoDaoTeste {
 		
 	}
 	
-	
 	public static void buscarPorChave() throws SQLException, IOException {
 		Connection conn = BancoDados.conectar();
 		CursoDao cursoDao = new CursoDao(conn);
@@ -54,12 +53,28 @@ public class CursoDaoTeste {
 		
 	}
 	
+	public static void atualizarDados() throws SQLException, IOException {
+		Connection conn = BancoDados.conectar();
+		CursoDao cursoDao = new CursoDao(conn);
+		
+		CursoDto cursoDto = new CursoDto("Automacao", 4, 2);
+		int rowsAffects = cursoDao.atualizar(cursoDto);
+		
+		if(rowsAffects > 0) {
+			System.out.println("Dados atualizados com sucesso");
+		}
+		else {
+			System.out.println("Erro ao atualizar");
+		}
+	}
+	
 	public static void main(String[] args) {
 		 try {
 //			CursoDaoTeste.cadastrarCursoTeste();
-//			CursoDaoTeste.listarCursos();
-			CursoDaoTeste.buscarPorChave();
-			 
+//			CursoDaoTeste.buscarPorChave();
+			CursoDaoTeste.atualizarDados();
+			CursoDaoTeste.listarCursos();
+
 		} catch (SQLException | IOException e) {
 			System.out.println(e.getMessage());
 		}

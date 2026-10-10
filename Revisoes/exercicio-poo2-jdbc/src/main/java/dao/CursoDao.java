@@ -68,7 +68,6 @@ public class CursoDao implements Dao<CursoDto, Integer>{
 		} 
 	}
 	
-	
 	@Override
  	public CursoDto buscarPorChave(Integer chave) throws SQLException {
 		PreparedStatement st = null;
@@ -98,13 +97,31 @@ public class CursoDao implements Dao<CursoDto, Integer>{
 			BancoDados.desconectar();
 		}
 	}
-	
-	
-	
+
 	@Override
-	public Integer atualizar(CursoDto entidade) {
-		return null;
+	public Integer atualizar(CursoDto entidade) throws SQLException {
+		PreparedStatement st = null;
+		
+		try {
+			st = conn.prepareStatement("UPDATE CURSO "
+					+ "SET NOME = ?,"
+					+ "PERIODO = ?,"
+					+ "DURACAO = ? ");
+		
+		st.setString(1, entidade.getNome());
+		st.setInt(2, entidade.getPeriodo());
+		st.setInt(3, entidade.getDuracao());
+		
+		return st.executeUpdate();
+		} 
+		
+		finally {
+			BancoDados.finalizarStatement(st);
+			BancoDados.desconectar();
+		}
 	}
+	
+	
 	@Override
 	public Integer excluir(Integer chave) {
 		return null;

@@ -57,12 +57,29 @@ public class AlunoDaoTeste {
 		}
 	}
 	
+	public static void atualizarDados() throws SQLException, IOException {
+		Connection conn = BancoDados.conectar();
+		AlunoDao alunoDao = new AlunoDao(conn);
+		 
+		AlunoDto alunoDto = new AlunoDto("Joana", "Feminino", new Date() , 3, 9.2, 1);
+		 
+		int rowsAffects = alunoDao.atualizar(alunoDto);
+		
+		if(rowsAffects > 0) {
+			System.out.println("Dados atualizados com sucesso");
+		}
+		else {
+			System.out.println("Erro ao atualizar");
+		}
+		
+	}
 	public static void main(String[] args) {
 		
 		try {
 //			AlunoDaoTeste.cadastrarAlunoTeste();
 //			AlunoDaoTeste.listarAlunos();
-			AlunoDaoTeste.buscarPorChave();
+//			AlunoDaoTeste.buscarPorChave();
+			AlunoDaoTeste.atualizarDados();
 			
 		} catch (SQLException | IOException e) {
 			System.out.println(e.getMessage());

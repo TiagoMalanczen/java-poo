@@ -46,7 +46,6 @@ public class AlunoDao implements Dao<AlunoDto, Integer>{
 		}
 	}
 
-
 	@Override
 	public List<AlunoDto> buscarTodos() throws SQLException {
 		PreparedStatement st = null;
@@ -83,11 +82,37 @@ public class AlunoDao implements Dao<AlunoDto, Integer>{
 
 
 	@Override
-	public AlunoDto buscarPorChave(Integer chave) {
-		// TODO Auto-generated method stub
-		return null;
+	public AlunoDto buscarPorChave(Integer chave) throws SQLException {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			st = connection.prepareStatement("SELECT * FROM ALUNO WHERE registro_academico = ?");
+			st.setInt(1, chave);
+			
+			rs = st.executeQuery();
+			
+			AlunoDto aluno = null;
+			if(rs.next()) {
+				 aluno = new AlunoDto(
+						rs.getString("Nome"), 
+						rs.getString("Sexo"), 
+						rs.getDate("Data_ingresso"),
+						rs.getInt("Periodo"),
+						rs.getDouble("Coeficiente"),
+						rs.getInt("Codigo_Curso"));
+				aluno.setRegistroAcademico(chave);
+			}
+			return aluno;
+		} finally {
+			BancoDados.finalizarStatement(st);
+			BancoDados.finalizarResultSet(rs);
+		} 
+		
 	}
 
+	
+	
 
 	@Override
 	public Integer atualizar(AlunoDto entidade) {

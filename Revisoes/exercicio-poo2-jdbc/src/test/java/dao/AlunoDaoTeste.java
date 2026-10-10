@@ -44,11 +44,25 @@ public class AlunoDaoTeste {
 		}
 	}
 	
+	public static void buscarPorChave() throws SQLException, IOException {
+		Connection conn = BancoDados.conectar();
+		AlunoDao alunoDao = new AlunoDao(conn);
+		AlunoDto aluno = alunoDao.buscarPorChave(1);
+		
+		if(aluno != null) {
+			System.out.println(aluno);
+		}
+		else {
+			System.out.println("Aluno nao encontrado");
+		}
+	}
+	
 	public static void main(String[] args) {
 		
 		try {
 //			AlunoDaoTeste.cadastrarAlunoTeste();
-			AlunoDaoTeste.listarAlunos();
+//			AlunoDaoTeste.listarAlunos();
+			AlunoDaoTeste.buscarPorChave();
 			
 		} catch (SQLException | IOException e) {
 			System.out.println(e.getMessage());

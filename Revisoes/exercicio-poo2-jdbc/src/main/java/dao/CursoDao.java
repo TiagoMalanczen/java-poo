@@ -1,5 +1,6 @@
 package dao;
 
+import java.beans.Customizer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,9 +39,7 @@ public class CursoDao implements Dao<CursoDto, Integer>{
 		
 		
 	}
-	
-	
-	
+
 	@Override
 	public List<CursoDto> buscarTodos() throws SQLException {
 		PreparedStatement st = null;
@@ -68,10 +67,40 @@ public class CursoDao implements Dao<CursoDto, Integer>{
 			BancoDados.desconectar();
 		} 
 	}
+	
+	
 	@Override
-	public CursoDto buscarPorChave(Integer chave) throws SQLException {
-		return null;
+ 	public CursoDto buscarPorChave(Integer chave) throws SQLException {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			st = conn.prepareStatement("SELECT * FROM CURSO WHERE CODIGO = ?");
+			st.setInt(1, chave);
+			
+			rs = st.executeQuery();
+			
+			CursoDto cursoDto = null;
+			
+			if(rs.next()) {
+			cursoDto = new CursoDto(
+						rs.getString("Nome"),
+						rs.getInt("Periodo"), 
+						rs.getInt("Duracao"));	
+			cursoDto.setCodigo(chave);
+			}
+			
+			return cursoDto;
+		} 
+		finally {
+			BancoDados.finalizarResultSet(rs);
+			BancoDados.finalizarStatement(st);
+			BancoDados.desconectar();
+		}
 	}
+	
+	
+	
 	@Override
 	public Integer atualizar(CursoDto entidade) {
 		return null;

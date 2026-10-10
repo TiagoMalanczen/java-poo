@@ -38,10 +38,27 @@ public class CursoDaoTeste {
 		
 	}
 	
+	
+	public static void buscarPorChave() throws SQLException, IOException {
+		Connection conn = BancoDados.conectar();
+		CursoDao cursoDao = new CursoDao(conn);
+		
+		CursoDto curso = cursoDao.buscarPorChave(1);
+		
+		if(curso != null) {
+			System.out.println(curso);
+		}
+		else {
+			System.out.println("Curso nao encontrado");
+		}
+		
+	}
+	
 	public static void main(String[] args) {
 		 try {
 //			CursoDaoTeste.cadastrarCursoTeste();
-			CursoDaoTeste.listarCursos();
+//			CursoDaoTeste.listarCursos();
+			CursoDaoTeste.buscarPorChave();
 			 
 		} catch (SQLException | IOException e) {
 			System.out.println(e.getMessage());

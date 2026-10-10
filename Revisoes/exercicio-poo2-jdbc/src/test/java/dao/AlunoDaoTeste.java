@@ -3,12 +3,10 @@ package dao;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import dto.AlunoDto;
-import dto.CursoDto;
 
 public class AlunoDaoTeste {
 
@@ -73,13 +71,29 @@ public class AlunoDaoTeste {
 		}
 		
 	}
-	public static void main(String[] args) {
+	
+	public static void deletarPorChave() throws SQLException, IOException {
+		Connection conn = BancoDados.conectar();
+		AlunoDao alunoDao = new AlunoDao(conn);
 		
+		int rowsAffects = alunoDao.excluir(2);
+		
+		if(rowsAffects > 0) {
+			System.out.println("Dados deletados com sucesso");
+		}
+		else {
+			System.out.println("Erro ao deletar");
+		}
+	}
+
+	public static void main(String[] args) {
+
 		try {
-//			AlunoDaoTeste.cadastrarAlunoTeste();
-//			AlunoDaoTeste.listarAlunos();
-//			AlunoDaoTeste.buscarPorChave();
+			AlunoDaoTeste.cadastrarAlunoTeste();
+			AlunoDaoTeste.listarAlunos();
+			AlunoDaoTeste.buscarPorChave();
 			AlunoDaoTeste.atualizarDados();
+			AlunoDaoTeste.deletarPorChave();
 			
 		} catch (SQLException | IOException e) {
 			System.out.println(e.getMessage());

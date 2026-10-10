@@ -1,6 +1,5 @@
 package dao;
 
-import java.beans.Customizer;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -57,7 +56,7 @@ public class CursoDaoTeste {
 		Connection conn = BancoDados.conectar();
 		CursoDao cursoDao = new CursoDao(conn);
 		
-		CursoDto cursoDto = new CursoDto("Automacao", 4, 2);
+		CursoDto cursoDto = new CursoDto("ADS", 4, 10);
 		int rowsAffects = cursoDao.atualizar(cursoDto);
 		
 		if(rowsAffects > 0) {
@@ -68,13 +67,29 @@ public class CursoDaoTeste {
 		}
 	}
 	
+	public static void deletarPorChave() throws SQLException, IOException{
+		Connection conn = BancoDados.conectar();
+		CursoDao cursoDao = new CursoDao(conn);
+		
+		int rowsAffects = cursoDao.excluir(1);
+		
+		if(rowsAffects > 0) {
+			System.out.println("Dados de com sucesso");
+		}
+		else {
+			System.out.println("Erro ao atualizar");
+		}
+	}
+	
 	public static void main(String[] args) {
 		 try {
-//			CursoDaoTeste.cadastrarCursoTeste();
-//			CursoDaoTeste.buscarPorChave();
-			CursoDaoTeste.atualizarDados();
+			 
+			CursoDaoTeste.cadastrarCursoTeste();
 			CursoDaoTeste.listarCursos();
-
+			CursoDaoTeste.buscarPorChave();
+			CursoDaoTeste.atualizarDados();
+			CursoDaoTeste.deletarPorChave();
+			 
 		} catch (SQLException | IOException e) {
 			System.out.println(e.getMessage());
 		}

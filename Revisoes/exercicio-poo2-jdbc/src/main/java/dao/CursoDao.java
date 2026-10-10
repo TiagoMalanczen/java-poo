@@ -1,6 +1,5 @@
 package dao;
 
-import java.beans.Customizer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -121,10 +120,22 @@ public class CursoDao implements Dao<CursoDto, Integer>{
 		}
 	}
 	
-	
 	@Override
-	public Integer excluir(Integer chave) {
-		return null;
+	public Integer excluir(Integer chave) throws SQLException {
+		PreparedStatement st = null;
+		
+		try {
+		st = conn.prepareStatement("DELETE FROM CURSO WHERE CODIGO = ?");	
+		
+		st.setInt(1, chave);
+		
+		return st.executeUpdate();
+		} 
+		
+		finally {
+			BancoDados.finalizarStatement(st);
+			BancoDados.desconectar();
+		}
 	}
 	
 }

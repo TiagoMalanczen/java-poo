@@ -9,6 +9,6 @@ public interface Dao<T, K> {
 	List<T> buscarTodos() throws SQLException;
 	T buscarPorChave(K chave) throws SQLException;
 	Integer atualizar(T entidade) throws SQLException;
-	Integer excluir(K chave);
+	Integer excluir(K chave) throws SQLException;
 	
 }

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dto.AlunoDto;
-import dto.CursoDto;
 
 public class AlunoDao implements Dao<AlunoDto, Integer>{
 
@@ -19,7 +18,6 @@ public class AlunoDao implements Dao<AlunoDto, Integer>{
 		super();
 		this.connection = connection;
 	}
-
 
 	@Override
 	public Integer cadastrar(AlunoDto entidade) throws SQLException {
@@ -138,12 +136,20 @@ public class AlunoDao implements Dao<AlunoDto, Integer>{
 		}
 	}
 
-	
-
 	@Override
-	public Integer excluir(Integer chave) {
-		// TODO Auto-generated method stub
-		return null;
+	public Integer excluir(Integer chave) throws SQLException {
+		PreparedStatement st = null;
+		
+		try {
+			st = connection.prepareStatement("DELETE FROM ALUNO WHERE REGISTRO_aCADEMICO = ?");
+			st.setInt(1, chave);
+			
+			return st.executeUpdate();
+			
+		} finally {
+			BancoDados.finalizarStatement(st);
+			BancoDados.desconectar();
+		}
 	}
 
 

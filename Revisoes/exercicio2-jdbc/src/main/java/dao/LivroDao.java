@@ -70,8 +70,32 @@ public class LivroDao implements Dao<LivroDto, Integer>{
 	}
 
 	@Override
-	public LivroDto buscarPorChave(Integer chave) {
-		return null;
+	public LivroDto buscarPorChave(Integer chave) throws SQLException {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			st = conn.prepareStatement("SELECT * FROM LIVROS WHERE 	numeroIdentificador = ?");
+			st.setInt(1, chave);
+			
+			rs = st.executeQuery();
+			
+			LivroDto livro = null;
+			
+			if(rs.next()) {
+				livro = new LivroDto(rs.getString("Titulo"),
+						rs.getString("Autor"),
+						rs.getInt("Ano"),
+						rs.getInt("totalPaginas"));
+			}
+			
+			return livro;
+		} 
+		finally {
+			BancoDados.finalizarResultSet(rs);
+			BancoDados.finalizarStatement(st);
+			BancoDados.desconectar();
+		}
 	}
 
 	@Override

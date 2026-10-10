@@ -35,11 +35,24 @@ public class LivroDaoTeste {
 			System.out.println(livro);
 		}
 	}
-	
+	static void buscarPorChave() throws SQLException, IOException {
+		Connection conn = BancoDados.conectar();
+		LivroDao dao = new LivroDao(conn);
+		
+		LivroDto livro = dao.buscarPorChave(3);
+		
+		if(livro != null) {
+			System.out.println(livro);
+		}
+		else {
+			System.out.println("Erro");
+		}
+		
+	}
 	public static void main(String[] args) throws SQLException, IOException {
 		
 //		LivroDaoTeste.cadastrarLivro();
-		LivroDaoTeste.listarTodos();
-		
+//		LivroDaoTeste.listarTodos();
+		LivroDaoTeste.buscarPorChave();
 	}
 }

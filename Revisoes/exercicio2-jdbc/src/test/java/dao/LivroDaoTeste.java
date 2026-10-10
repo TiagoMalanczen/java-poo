@@ -39,7 +39,7 @@ public class LivroDaoTeste {
 		Connection conn = BancoDados.conectar();
 		LivroDao dao = new LivroDao(conn);
 		
-		LivroDto livro = dao.buscarPorChave(3);
+		LivroDto livro = dao.buscarPorChave(1);
 		
 		if(livro != null) {
 			System.out.println(livro);
@@ -49,10 +49,38 @@ public class LivroDaoTeste {
 		}
 		
 	}
-	public static void main(String[] args) throws SQLException, IOException {
+	static void atualizarDados() throws SQLException, IOException {
+		Connection conn = BancoDados.conectar();
+		LivroDao dao = new LivroDao(conn);
+		LivroDto dto = new LivroDto("Pe grande", "Pedro", 2010, 400);
 		
-//		LivroDaoTeste.cadastrarLivro();
-//		LivroDaoTeste.listarTodos();
-		LivroDaoTeste.buscarPorChave();
+		
+		int linhasAfetadas = dao.atulizar(dto);
+		
+		if(linhasAfetadas > 0) {
+			System.out.println("Livro atualizado com sucesso");
+		}
+		else {
+			System.out.println("Erro");
+		}	
+	}
+	
+	public static void main(String[] args)  {
+
+		try {
+//			LivroDaoTeste.cadastrarLivro();
+//			LivroDaoTeste.listarTodos();
+//			LivroDaoTeste.buscarPorChave();
+			LivroDaoTeste.atualizarDados();
+			
+			
+		} 
+		catch (SQLException e) {
+			e.printStackTrace();
+			
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -99,8 +99,26 @@ public class LivroDao implements Dao<LivroDto, Integer>{
 	}
 
 	@Override
-	public Integer atulizar(LivroDto entidade) {
-		return null;
+	public Integer atulizar(LivroDto entidade) throws SQLException {
+		PreparedStatement st = null;
+		
+		try {
+			st = conn.prepareStatement("UPDATE LIVROS "
+					+ "SET TITULO = ?,"
+					+ "AUTOR =?,"
+					+ "ANO =?,"
+					+ "TOTALPAGINAS =?");
+			st.setString(1, entidade.getTitulo());
+			st.setString(2, entidade.getAutorPrincipal());
+			st.setInt(3, entidade.getAnoPublicacao());
+			st.setInt(4, entidade.getNumeroPaginas());
+			
+			return st.executeUpdate();
+		} 
+		finally {
+			BancoDados.finalizarStatement(st);
+			BancoDados.desconectar();
+		}
 	}
 
 	@Override

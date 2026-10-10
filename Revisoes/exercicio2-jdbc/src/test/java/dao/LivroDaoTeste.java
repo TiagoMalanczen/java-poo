@@ -3,6 +3,7 @@ package dao;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import dto.LivroDto;
 
@@ -22,11 +23,23 @@ public class LivroDaoTeste {
 			System.out.println("Erro");
 		}
 	}
-	
+	static void listarTodos() throws SQLException, IOException {
+		Connection conn = BancoDados.conectar();
+		LivroDao livroDao = new LivroDao(conn);
+		List<LivroDto> livros = livroDao.listarTodos();
+		
+		if(livros.isEmpty()) {
+			System.out.println("Lista vazia");
+		}
+		for(LivroDto livro : livros) {
+			System.out.println(livro);
+		}
+	}
 	
 	public static void main(String[] args) throws SQLException, IOException {
 		
-		LivroDaoTeste.cadastrarLivro();
+//		LivroDaoTeste.cadastrarLivro();
+		LivroDaoTeste.listarTodos();
 		
 	}
 }

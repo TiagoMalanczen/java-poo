@@ -37,6 +37,11 @@ public class LivroDto {
 	public void setNumeroPaginas(int numeroPaginas) {
 		this.numeroPaginas = numeroPaginas;
 	}
+	@Override
+	public String toString() {
+		return "LivroDto [titulo=" + titulo + ", autorPrincipal=" + autorPrincipal + ", anoPublicacao=" + anoPublicacao
+				+ ", numeroPaginas=" + numeroPaginas + "]";
+	}
 	
 	
 }

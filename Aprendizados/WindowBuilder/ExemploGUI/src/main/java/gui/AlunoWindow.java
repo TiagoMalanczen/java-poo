@@ -1,6 +1,8 @@
 package gui;
 
 import java.awt.EventQueue;
+import java.text.ParseException;
+
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -22,6 +24,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
 
 public class AlunoWindow extends JFrame {
 
@@ -43,7 +46,7 @@ public class AlunoWindow extends JFrame {
 	private JRadioButton rbMasculino;
 	private JRadioButton rbFeminino;
 	private JRadioButton rbNaoInformar;
-	private final ButtonGroup grupoSexo = new ButtonGroup();
+	private ButtonGroup bgSexo;
 	
 	private JLabel lblCurso;
 	private JComboBox<String> cbCurso;
@@ -62,6 +65,9 @@ public class AlunoWindow extends JFrame {
 	
 	private JScrollPane scrollPane;
 	private JTable tblAlunos;
+	
+	private MaskFormatter mascaraData;
+	
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
@@ -74,7 +80,16 @@ public class AlunoWindow extends JFrame {
 		});
 	}
 
+	public void criarMascara() {
+		try {
+			this.mascaraData = new MaskFormatter("##/##/####");
+		} catch (ParseException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
 	public AlunoWindow() {
+		this.criarMascara();
 		this.iniciarComponentes();
 	}
 
@@ -130,18 +145,20 @@ public class AlunoWindow extends JFrame {
 		rbMasculino = new JRadioButton("Masculino");
 		rbMasculino.setSelected(true);
 		rbMasculino.setBounds(6, 18, 100, 20);
-		grupoSexo.add(rbMasculino);
 		painelSexo.add(rbMasculino);
 		
 		rbFeminino = new JRadioButton("Feminino");
 		rbFeminino.setBounds(6, 41, 100, 20);
-		grupoSexo.add(rbFeminino);
 		painelSexo.add(rbFeminino);
 		
 		rbNaoInformar = new JRadioButton("Não Informar");
 		rbNaoInformar.setBounds(6, 64, 108, 20);
-		grupoSexo.add(rbNaoInformar);
 		painelSexo.add(rbNaoInformar);
+		
+		this.bgSexo = new ButtonGroup();
+		this.bgSexo.add(rbMasculino);
+		this.bgSexo.add(rbFeminino);
+		this.bgSexo.add(rbNaoInformar);
 		
 		lblCurso = new JLabel("Curso");
 		lblCurso.setBounds(145, 72, 46, 14);
@@ -160,7 +177,7 @@ public class AlunoWindow extends JFrame {
 		lblDataIngresso.setBounds(145, 108, 95, 14);
 		contentPane.add(lblDataIngresso);
 		
-		txtDataIngresso = new JFormattedTextField();
+		txtDataIngresso = new JFormattedTextField(mascaraData);
 		txtDataIngresso.setBounds(245, 105, 80, 20);
 		contentPane.add(txtDataIngresso);
 		

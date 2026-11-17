@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.EventQueue;
 import java.text.ParseException;
+import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -26,6 +27,11 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 
+import dto.AlunoDTO;
+import dto.CursoDTO;
+import service.AlunoService;
+import service.CursoService;
+
 public class AlunoWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -49,7 +55,7 @@ public class AlunoWindow extends JFrame {
 	private ButtonGroup bgSexo;
 	
 	private JLabel lblCurso;
-	private JComboBox<String> cbCurso;
+	private JComboBox<CursoDTO> cbCurso;
 	private JLabel lblDataIngresso;
 	private JFormattedTextField txtDataIngresso;
 	private JLabel lblPeriodo;
@@ -68,6 +74,9 @@ public class AlunoWindow extends JFrame {
 	
 	private MaskFormatter mascaraData;
 	
+	private CursoService cursoService;
+	private AlunoService alunoService;
+	
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
@@ -80,6 +89,34 @@ public class AlunoWindow extends JFrame {
 		});
 	}
 
+	private void buscarAlunos() {
+		List<AlunoDTO> listaAlunos = this.alunoService.buscarTodos();
+		
+		DefaultTableModel modelo = (DefaultTableModel) tblAlunos.getModel();
+		modelo.fireTableDataChanged();
+		modelo.setRowCount(0);
+		
+		for (AlunoDTO alunoDTO : listaAlunos) {
+			modelo.addRow(new Object[] {
+				alunoDTO.getRegistroAcademico(),
+				alunoDTO.getNome(),
+				alunoDTO.getSexo(),
+				alunoDTO.getCursoDTO().getNome(),
+				alunoDTO.getDataIngresso(),
+				alunoDTO.getPeriodo(),
+				alunoDTO.getCoeficiente()
+			});
+		}
+	}
+	
+	private void BuscarCurso() {
+		List<CursoDTO> listaCurso = this.cursoService.buscarTodos();
+		
+		for(CursoDTO cursoDTO : listaCurso) {
+			this.cbCurso.addItem(cursoDTO);
+		}
+	}
+	
 	public void criarMascara() {
 		try {
 			this.mascaraData = new MaskFormatter("##/##/####");
@@ -91,6 +128,12 @@ public class AlunoWindow extends JFrame {
 	public AlunoWindow() {
 		this.criarMascara();
 		this.iniciarComponentes();
+		
+		this.cursoService = new CursoService();
+		this.alunoService = new AlunoService();
+		
+		this.buscarAlunos();
+		this.BuscarCurso();
 	}
 
 	private void iniciarComponentes() {
@@ -165,11 +208,6 @@ public class AlunoWindow extends JFrame {
 		contentPane.add(lblCurso);
 		
 		cbCurso = new JComboBox<>();
-		cbCurso.setModel(new DefaultComboBoxModel<>(new String[] {
-			"Análise e Desenvolvimento de Sistemas", 
-			"Engenharia de Software", 
-			"Ciência da Computação"
-		}));
 		cbCurso.setBounds(235, 68, 199, 22);
 		contentPane.add(cbCurso);
 		

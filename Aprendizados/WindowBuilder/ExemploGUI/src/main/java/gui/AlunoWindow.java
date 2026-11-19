@@ -1,11 +1,13 @@
 package gui;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -77,7 +79,28 @@ public class AlunoWindow extends JFrame {
 	private CursoService cursoService;
 	private AlunoService alunoService;
 	
+	public AlunoWindow() {
+		this.criarMascara();
+		this.iniciarComponentes();
+		
+		this.cursoService = new CursoService();
+		this.alunoService = new AlunoService();
+		
+		this.buscarAlunos();
+		this.BuscarCurso();
+		this.limparComponentes();
+	}
 
+	private void limparComponentes() {
+		this.txtRegistroAcademico.setText("");
+		this.txtNome.setText("");
+		this.rbNaoInformar.setSelected(true);
+		this.cbCurso.setSelectedIndex(0);
+		this.txtDataIngresso.setText("");
+		this.spPeriodo.setValue(1);
+		this.txtCoeficiente.setText("");
+	}
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
 			try {
@@ -125,17 +148,101 @@ public class AlunoWindow extends JFrame {
 		}
 	}
 	
-	public AlunoWindow() {
-		this.criarMascara();
-		this.iniciarComponentes();
-		
-		this.cursoService = new CursoService();
-		this.alunoService = new AlunoService();
-		
-		this.buscarAlunos();
-		this.BuscarCurso();
+	private void cadastrarAluno() {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			AlunoDTO alunoDTO = new AlunoDTO();
+			
+			alunoDTO.setNome(this.txtNome.getText().trim());
+			alunoDTO.setSexo(this.verificarSexo());
+			alunoDTO.setRegistroAcademico(Integer.parseInt(txtRegistroAcademico.getText()));
+			alunoDTO.setCursoDTO((CursoDTO) this.cbCurso.getSelectedItem());
+			alunoDTO.setDataIngresso(new java.sql.Date(sdf.parse(this.txtDataIngresso.getText()).getTime()));
+			alunoDTO.setCoeficiente(Integer.parseInt(txtCoeficiente.getText().trim()));
+			alunoDTO.setPeriodo(Integer.parseInt(spPeriodo.getValue().toString()));
+			
+			int resultado = alunoService.cadastrar(alunoDTO);
+			
+			if(resultado > 0) {
+				System.out.println("Aluno cadastrado com sucesso");
+			}
+			else {
+				System.out.println("Não foi possível cadastrar um novo aluno");
+			}
+			
+		} 
+		catch (ParseException | NumberFormatException e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+		finally {
+			buscarAlunos();
+		}
 	}
+	private String verificarSexo() {
+		if(rbMasculino.isSelected()) {
+			return rbMasculino.getText().trim();
+		} 
+		else if (rbFeminino.isSelected()) {
+			return rbFeminino.getText().trim();
+		}
+		else {
+			return rbNaoInformar.getText().trim();
+		}
+	}
+	
+	private void atualizarAluno() {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			AlunoDTO alunoDTO = new AlunoDTO();
+			
+			alunoDTO.setRegistroAcademico(Integer.parseInt(txtRegistroAcademico.getText().trim()));
+			alunoDTO.setNome(this.txtNome.getText().trim());
+			alunoDTO.setSexo(this.verificarSexo());
+			alunoDTO.setCursoDTO((CursoDTO) this.cbCurso.getSelectedItem()); // Ajuste para setCurso se necessário
+			alunoDTO.setDataIngresso(new java.sql.Date(sdf.parse(this.txtDataIngresso.getText()).getTime()));
+			alunoDTO.setPeriodo(Integer.parseInt(this.spPeriodo.getValue().toString()));
+			alunoDTO.setCoeficiente(Double.parseDouble(this.txtCoeficiente.getText().trim().replace(',', '.')));
 
+			int resultado = alunoService.atualizar(alunoDTO);
+
+			if (resultado > 0) {
+				System.out.println("Cadastro Atualizado com Sucesso.");
+			} else {
+				System.out.println("Não foi possível atualizar o registro do aluno.");
+			}
+		} catch (ParseException | NumberFormatException e) {
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			this.buscarAlunos();
+		}
+	}
+	
+	private void excluirAluno() {
+		try {
+			int ra = Integer.parseInt(this.txtRegistroAcademico.getText().trim());
+			int resultado = this.alunoService.excluir(ra);
+
+			if (resultado > 0) {
+				System.out.println("Aluno excluído com sucesso.");
+			} else {
+				System.out.println("Não foi possível excluir um aluno.");
+			}
+		} catch (Exception e) {
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			this.buscarAlunos();
+		}
+	}
+	
+	private void finalizarAplicacao() {
+		System.exit(0);
+	}
+	
+	private void abrirJanelaSobre() {
+		SobreWindow janelaSobre = new SobreWindow(this);
+		janelaSobre.setVisible(true);
+		this.setVisible(false);
+	}
 	private void iniciarComponentes() {
 		setTitle("Aluno");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -148,12 +255,22 @@ public class AlunoWindow extends JFrame {
 		menuBar.add(menuArquivo);
 		
 		itemSair = new JMenuItem("Sair");
+		itemSair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				finalizarAplicacao();
+			}
+		});
 		menuArquivo.add(itemSair);
 		
 		menuAjuda = new JMenu("Ajuda");
 		menuBar.add(menuAjuda);
 		
 		itemSobre = new JMenuItem("Sobre");
+		itemSobre.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0){
+				abrirJanelaSobre();
+			}
+		});
 		menuAjuda.add(itemSobre);
 		
 		contentPane = new JPanel();
@@ -242,18 +359,38 @@ public class AlunoWindow extends JFrame {
 		contentPane.add(separator);
 		
 		btnCadastrar = new JButton("Cadastrar");
+		btnCadastrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				cadastrarAluno();
+			}
+		});
 		btnCadastrar.setBounds(10, 186, 95, 23);
 		contentPane.add(btnCadastrar);
 		
 		btnLimparCampos = new JButton("Limpar Campos");
+		btnLimparCampos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				limparComponentes();
+			}
+		});
 		btnLimparCampos.setBounds(130, 186, 125, 23);
 		contentPane.add(btnLimparCampos);
 		
 		btnAtualizar = new JButton("Atualizar");
+		btnAtualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				atualizarAluno();
+			}
+		});
 		btnAtualizar.setBounds(261, 186, 85, 23);
 		contentPane.add(btnAtualizar);
 		
 		btnExcluir = new JButton("Excluir");
+		btnExcluir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				excluirAluno();
+			}
+		});
 		btnExcluir.setBounds(352, 186, 82, 23);
 		contentPane.add(btnExcluir);
 		

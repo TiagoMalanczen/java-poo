@@ -13,11 +13,18 @@ import java.awt.event.ActionEvent;
 public class CaixasDialogo extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	
 	private JPanel contentPane;
+	
+	private JButton btnInformacao;
+	private JButton btnAdvertencia;
+	private JButton btnErro;
+	private JButton btnQuestionamento;
+	private JButton btnMensagem;
+	
+	private JButton btnCalcular;
 
-	/**
-	 * Launch the application.
-	 */
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -31,10 +38,41 @@ public class CaixasDialogo extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public CaixasDialogo() {
+		iniciarComponentes();
+	}
+
+	private void exibirMensagem() {
+		JOptionPane.showMessageDialog(null, "Você tem uma mensagem", "Mensagem", JOptionPane.PLAIN_MESSAGE);
+	}
+	private void exibirMensagemInformacao() {
+		JOptionPane.showMessageDialog(null, "Mensagem de informacao", "Informacao", JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	private void exibirMensagemAdvertencia() {
+		JOptionPane.showMessageDialog(null, "Mensagem de advertência", "Advertência", JOptionPane.WARNING_MESSAGE);
+	}
+	private void exibirMensagemErro() {
+		JOptionPane.showMessageDialog(null, "Mensagem de Erro", "Erro", JOptionPane.ERROR_MESSAGE);
+	}
+	private void exibirMensagemQuestionamentto() {
+		JOptionPane.showMessageDialog(null, "Mensagem de questionamento", "Questionamento", JOptionPane.QUESTION_MESSAGE);
+	}
+	private void calcular() {
+		String valor1 = JOptionPane.showInputDialog(null, "Informe o primeiro valor", "Valor 1", JOptionPane.QUESTION_MESSAGE);
+		if(valor1 == null) return;
+		String valor2 = JOptionPane.showInputDialog(null, "Informe o segundo valor", "Valor 2", JOptionPane.QUESTION_MESSAGE);
+		if(valor2 == null) return;
+		Double convertido1 = Double.parseDouble(valor1);
+		Double convertido2 = Double.parseDouble(valor2);
+
+		JOptionPane.showMessageDialog(null, convertido1+convertido2, "Soma",  JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, convertido1-convertido2, "Subtração",  JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, convertido1/convertido2, "Divisão",  JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, convertido1*convertido2, "Multiplicação",  JOptionPane.INFORMATION_MESSAGE);
+
+	}
+	public void iniciarComponentes() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -42,50 +80,66 @@ public class CaixasDialogo extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JButton btnInformacao = new JButton("Informação");
+		btnInformacao = new JButton("Informação");
 		btnInformacao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane.showMessageDialog(null, "Mensagem de informacao", "Informacao", JOptionPane.INFORMATION_MESSAGE);
+				exibirMensagemInformacao();
 			}
+
 		});
-		btnInformacao.setBounds(33, 72, 89, 23);
+		btnInformacao.setBounds(18, 84, 89, 23);
 		contentPane.add(btnInformacao);
 		
-		JButton btnAdvertencia = new JButton("Advertência");
+		btnAdvertencia = new JButton("Advertência");
 		btnAdvertencia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "Mensagem de advertência", "Advertência", JOptionPane.WARNING_MESSAGE);
+				exibirMensagemAdvertencia();
 			}
+
 		});
-		btnAdvertencia.setBounds(167, 72, 97, 23);
+		btnAdvertencia.setBounds(13, 108, 97, 23);
 		contentPane.add(btnAdvertencia);
 		
-		JButton btnErro = new JButton("Erro");
+		btnErro = new JButton("Erro");
 		btnErro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "Mensagem de Erro", "Erro", JOptionPane.ERROR_MESSAGE);
+				exibirMensagemErro();
 			}
+
+			
 		});
-		btnErro.setBounds(301, 73, 89, 23);
+		btnErro.setBounds(18, 59, 89, 23);
 		contentPane.add(btnErro);
 		
-		JButton btnQuestionamento = new JButton("Questionamento");
+		btnQuestionamento = new JButton("Questionamento");
 		btnQuestionamento.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "Mensagem de questionamento", "Questionamento", JOptionPane.QUESTION_MESSAGE);
+				exibirMensagemQuestionamentto();
 			}
+
+			
 		});
-		btnQuestionamento.setBounds(88, 154, 125, 23);
+		btnQuestionamento.setBounds(-2, 10, 125, 23);
 		contentPane.add(btnQuestionamento);
 		
-		JButton btnMensagem = new JButton("Mensagem");
+		btnMensagem = new JButton("Mensagem");
 		btnMensagem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "Você tem uma mensagem", "Mensagem", JOptionPane.PLAIN_MESSAGE);
+				exibirMensagem();
+			}
+
+			
+		});
+		btnMensagem.setBounds(4, 34, 117, 23);
+		contentPane.add(btnMensagem);
+		
+		btnCalcular = new JButton("Calcular");
+		btnCalcular.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				calcular();
 			}
 		});
-		btnMensagem.setBounds(234, 154, 117, 23);
-		contentPane.add(btnMensagem);
-
+		btnCalcular.setBounds(226, 10, 112, 47);
+		contentPane.add(btnCalcular);
 	}
 }

@@ -23,6 +23,7 @@ public class CaixasDialogo extends JFrame {
 	private JButton btnMensagem;
 	
 	private JButton btnCalcular;
+	private JButton btnConfirmacao;
 
 
 	public static void main(String[] args) {
@@ -57,6 +58,17 @@ public class CaixasDialogo extends JFrame {
 	}
 	private void exibirMensagemQuestionamentto() {
 		JOptionPane.showMessageDialog(null, "Mensagem de questionamento", "Questionamento", JOptionPane.QUESTION_MESSAGE);
+	}
+	private void excluir() {
+		int result = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir?", "Confirmação", JOptionPane.YES_NO_CANCEL_OPTION);
+		
+		if(result == JOptionPane.YES_OPTION) {
+			JOptionPane.showMessageDialog(null, "Excluido com sucesso", "Resultado", JOptionPane.INFORMATION_MESSAGE);
+		}
+		else {
+			JOptionPane.showMessageDialog(null, "Cancelado com sucesso", "Resultado", JOptionPane.INFORMATION_MESSAGE);
+
+		}
 	}
 	private void calcular() {
 		String valor1 = JOptionPane.showInputDialog(null, "Informe o primeiro valor", "Valor 1", JOptionPane.QUESTION_MESSAGE);
@@ -141,5 +153,14 @@ public class CaixasDialogo extends JFrame {
 		});
 		btnCalcular.setBounds(226, 10, 112, 47);
 		contentPane.add(btnCalcular);
+		
+		btnConfirmacao = new JButton("Confirmação");
+		btnConfirmacao.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				excluir();
+			}
+		});
+		btnConfirmacao.setBounds(226, 108, 160, 79);
+		contentPane.add(btnConfirmacao);
 	}
 }

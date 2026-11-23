@@ -24,6 +24,7 @@ public class CaixasDialogo extends JFrame {
 	
 	private JButton btnCalcular;
 	private JButton btnConfirmacao;
+	private JButton btnExportar;
 
 
 	public static void main(String[] args) {
@@ -84,6 +85,19 @@ public class CaixasDialogo extends JFrame {
 		JOptionPane.showMessageDialog(null, convertido1*convertido2, "Multiplicação",  JOptionPane.INFORMATION_MESSAGE);
 
 	}
+	private void exportar() {
+			String [] options = {"imprimir", "salvar PDF"};
+			
+			int result = JOptionPane.showOptionDialog(null, "O que deseja fazer?", "Exportar",
+					JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+			
+			if(result == 0) {
+				JOptionPane.showMessageDialog(null, "Imprimindo", "Impressão",  JOptionPane.INFORMATION_MESSAGE);
+			}else if(result == 1){
+				JOptionPane.showMessageDialog(null, "Salvando PDF", "Salvar PDF",  JOptionPane.INFORMATION_MESSAGE);
+			}
+	}
+	
 	public void iniciarComponentes() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -162,5 +176,14 @@ public class CaixasDialogo extends JFrame {
 		});
 		btnConfirmacao.setBounds(226, 108, 160, 79);
 		contentPane.add(btnConfirmacao);
+		
+		btnExportar = new JButton("Exportar");
+		btnExportar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				exportar();
+			}
+		});
+		btnExportar.setBounds(21, 164, 160, 61);
+		contentPane.add(btnExportar);
 	}
 }

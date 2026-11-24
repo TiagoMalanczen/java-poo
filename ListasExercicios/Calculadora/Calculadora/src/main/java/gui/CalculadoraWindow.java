@@ -50,9 +50,7 @@ public class CalculadoraWindow extends JFrame {
 	private String operacao;
 	private boolean limparProximoDigito;
 	
-	/**
-	 * Launch the application.
-	 */
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -145,13 +143,28 @@ public class CalculadoraWindow extends JFrame {
 		operacao = null;
 		limparProximoDigito = true;
 	}
-	
+		
 	private void limparCampos() {
 		txtVisor.setText("");
 		primeiroNumero = null;
-		segundoNumero = null;
 		operacao = null;
 		limparProximoDigito = false;
+	}
+
+	private void salvarMemoria() {
+		String texto = txtVisor.getText().trim();
+		if (texto.isEmpty() || texto.equals("Erro")) {
+			return;
+		}
+		calculadoraService.armazenarValor(Double.parseDouble(texto.replace(",", ".")));
+	}
+
+	private void recuperarMemoria() {
+		Double valor = calculadoraService.chamarValor();
+		if (valor != null) {
+			txtVisor.setText(String.valueOf(valor).replace(".", ","));
+			limparProximoDigito = true;
+		}
 	}
 	
 	public void iniciarComponentes() {
@@ -164,16 +177,31 @@ public class CalculadoraWindow extends JFrame {
 		
 		// Linha 1: MS, MR, MC, C
 		btnMS = new JButton("MS");
+		btnMS.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				salvarMemoria();
+			}
+		});
 		btnMS.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnMS.setBounds(10, 90, 66, 48);
 		contentPane.add(btnMS);
 		
 		btnMR = new JButton("MR");
+		btnMR.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				recuperarMemoria();
+			}
+		});
 		btnMR.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnMR.setBounds(86, 90, 66, 48);
 		contentPane.add(btnMR);
 		
 		btnMC = new JButton("MC");
+		btnMC.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				limparCampos();
+			}
+		});
 		btnMC.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnMC.setBounds(162, 90, 66, 48);
 		contentPane.add(btnMC);

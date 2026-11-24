@@ -5,10 +5,15 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import service.CalculadoraService;
+
 import javax.swing.JButton;
 import java.awt.Font;
-import javax.swing.JLabel;
 import javax.swing.JTextField;
+import java.awt.event.ActionListener;
+import java.lang.management.OperatingSystemMXBean;
+import java.awt.event.ActionEvent;
 
 public class CalculadoraWindow extends JFrame {
 
@@ -37,7 +42,16 @@ public class CalculadoraWindow extends JFrame {
 	private JButton btnVirgula;
 	private JButton btnIgual;
 	private JButton btnSomar;
-
+	
+	private CalculadoraService calculadoraService = new CalculadoraService();
+	
+	private Double primeiroNumero;
+	private Double segundoNumero;
+	
+	private String operacao;
+	private boolean limparProximoDigito;
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -58,6 +72,85 @@ public class CalculadoraWindow extends JFrame {
 		iniciarComponentes();
 	}
 
+	private void adicionarDigito(String digito) {
+		if(limparProximoDigito) {
+			txtVisor.setText("");
+			limparProximoDigito = false;
+		}
+		
+		String atual = txtVisor.getText();
+		
+		if(digito.equals(",")) {
+			if(atual.contains(",")) {
+				return;			
+			}
+			if(atual.isEmpty()) {
+				txtVisor.setText("0, ");
+			}
+			txtVisor.setText(atual + ", ");
+			return;
+		}
+		
+		if(atual.isEmpty() || atual.equals("0")) {
+			txtVisor.setText(digito);
+		}
+		else {
+			txtVisor.setText(atual + digito);
+		}
+	}
+	
+	
+	private void escolherOperacao(String op) {
+		String texto = txtVisor.getText().trim();
+		if(texto.isEmpty()) {
+			return;
+		}
+		primeiroNumero = Double.parseDouble(texto.replace(",", "."));
+		operacao = op;
+		limparProximoDigito = true;
+	}
+	
+	private void calcularResultado() {
+		if (primeiroNumero == null || operacao == null) {
+			return;
+		}
+		String texto = txtVisor.getText().trim();
+		if (texto.isEmpty()) {
+			return;
+		}
+
+		Double segundoNumero = Double.parseDouble(texto.replace(",", "."));
+		Double resultado = null;
+
+		switch (operacao) {
+			case "+":
+				resultado = calculadoraService.soma(primeiroNumero, segundoNumero);
+				break;
+			case "-":
+				resultado = calculadoraService.subtracao(primeiroNumero, segundoNumero);
+				break;
+			case "*":
+				resultado = calculadoraService.multiplicacao(primeiroNumero, segundoNumero);
+				break;
+			case "/":
+				resultado = calculadoraService.divisao(primeiroNumero, segundoNumero);
+				break;
+		}
+
+		if (resultado == null) {
+			txtVisor.setText("Erro");
+		} else {
+			txtVisor.setText(String.valueOf(resultado).replace(".", ","));
+		}
+
+		primeiroNumero = null;
+		operacao = null;
+		limparProximoDigito = true;
+	}
+	
+	private void limparCampos() {
+		txtVisor.setText("");
+	}
 	public void iniciarComponentes() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 320, 419);
@@ -83,22 +176,42 @@ public class CalculadoraWindow extends JFrame {
 		contentPane.add(btnMC);
 		
 		btnC = new JButton("C");
+		btnC.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				limparCampos();
+			}
+		});
 		btnC.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnC.setBounds(238, 90, 66, 48);
 		contentPane.add(btnC);
 		
 		// Linha 2: 7, 8, 9, /
 		btn7 = new JButton("7");
+		btn7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				adicionarDigito("7");
+			}
+		});
 		btn7.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btn7.setBounds(10, 149, 66, 48);
 		contentPane.add(btn7);
 		
 		btn8 = new JButton("8");
+		btn8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				adicionarDigito("8");
+			}
+		});
 		btn8.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btn8.setBounds(86, 149, 66, 48);
 		contentPane.add(btn8);
 		
 		btn9 = new JButton("9");
+		btn9.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				adicionarDigito("9");
+			}
+		});
 		btn9.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btn9.setBounds(162, 149, 66, 48);
 		contentPane.add(btn9);
@@ -110,16 +223,31 @@ public class CalculadoraWindow extends JFrame {
 		
 		// Linha 3: 4, 5, 6, *
 		btn4 = new JButton("4");
+		btn4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				adicionarDigito("4");
+			}
+		});
 		btn4.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btn4.setBounds(10, 209, 66, 48);
 		contentPane.add(btn4);
 		
 		btn5 = new JButton("5");
+		btn5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				adicionarDigito("5");
+			}
+		});
 		btn5.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btn5.setBounds(86, 209, 66, 48);
 		contentPane.add(btn5);
 		
 		btn6 = new JButton("6");
+		btn6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				adicionarDigito("6");
+			}
+		});
 		btn6.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btn6.setBounds(162, 209, 66, 48);
 		contentPane.add(btn6);
@@ -131,16 +259,31 @@ public class CalculadoraWindow extends JFrame {
 		
 		// Linha 4: 1, 2, 3, -
 		btn1 = new JButton("1");
+		btn1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				adicionarDigito("1");
+			}
+		});
 		btn1.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btn1.setBounds(10, 268, 66, 48);
 		contentPane.add(btn1);
 		
 		btn2 = new JButton("2");
+		btn2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				adicionarDigito("2");
+			}
+		});
 		btn2.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btn2.setBounds(86, 268, 66, 48);
 		contentPane.add(btn2);
 		
 		btn3 = new JButton("3");
+		btn3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				adicionarDigito("3");
+			}
+		});
 		btn3.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btn3.setBounds(162, 268, 66, 48);
 		contentPane.add(btn3);
@@ -152,27 +295,48 @@ public class CalculadoraWindow extends JFrame {
 		
 		// Linha 5: 0, ,, =, +
 		btn0 = new JButton("0");
+		btn0.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				adicionarDigito("0");
+			}
+		});
 		btn0.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btn0.setBounds(10, 327, 66, 48);
 		contentPane.add(btn0);
 		
 		btnVirgula = new JButton(",");
+		btnVirgula.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				adicionarDigito(",");
+			}
+		});
 		btnVirgula.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnVirgula.setBounds(86, 327, 66, 48);
 		contentPane.add(btnVirgula);
 		
 		btnIgual = new JButton("=");
+		btnIgual.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				calcularResultado();
+			}
+		});
 		btnIgual.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnIgual.setBounds(162, 327, 66, 48);
 		contentPane.add(btnIgual);
 		
 		btnSomar = new JButton("+");
+		btnSomar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				escolherOperacao("+");;
+			}
+		});
 		btnSomar.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnSomar.setBounds(238, 327, 66, 48);
 		contentPane.add(btnSomar);
 		
 		// Visor
 		txtVisor = new JTextField();
+		txtVisor.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		txtVisor.setBounds(10, 11, 294, 68);
 		contentPane.add(txtVisor);
 		txtVisor.setColumns(10);

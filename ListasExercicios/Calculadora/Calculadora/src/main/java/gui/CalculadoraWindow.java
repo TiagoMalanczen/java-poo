@@ -12,7 +12,6 @@ import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
-import java.lang.management.OperatingSystemMXBean;
 import java.awt.event.ActionEvent;
 
 public class CalculadoraWindow extends JFrame {
@@ -51,7 +50,6 @@ public class CalculadoraWindow extends JFrame {
 	private String operacao;
 	private boolean limparProximoDigito;
 	
-	
 	/**
 	 * Launch the application.
 	 */
@@ -73,36 +71,35 @@ public class CalculadoraWindow extends JFrame {
 	}
 
 	private void adicionarDigito(String digito) {
-		if(limparProximoDigito) {
+		if (limparProximoDigito) {
 			txtVisor.setText("");
 			limparProximoDigito = false;
 		}
-		
+
 		String atual = txtVisor.getText();
-		
-		if(digito.equals(",")) {
-			if(atual.contains(",")) {
-				return;			
+
+		if (digito.equals(",")) {
+			if (atual.contains(",")) {
+				return;
 			}
-			if(atual.isEmpty()) {
-				txtVisor.setText("0, ");
+			if (atual.isEmpty()) {
+				txtVisor.setText("0,");
+				return;
 			}
-			txtVisor.setText(atual + ", ");
+			txtVisor.setText(atual + ",");
 			return;
 		}
-		
-		if(atual.isEmpty() || atual.equals("0")) {
+
+		if (atual.isEmpty() || atual.equals("0")) {
 			txtVisor.setText(digito);
-		}
-		else {
+		} else {
 			txtVisor.setText(atual + digito);
 		}
 	}
 	
-	
 	private void escolherOperacao(String op) {
 		String texto = txtVisor.getText().trim();
-		if(texto.isEmpty()) {
+		if (texto.isEmpty()) {
 			return;
 		}
 		primeiroNumero = Double.parseDouble(texto.replace(",", "."));
@@ -119,7 +116,7 @@ public class CalculadoraWindow extends JFrame {
 			return;
 		}
 
-		Double segundoNumero = Double.parseDouble(texto.replace(",", "."));
+		segundoNumero = Double.parseDouble(texto.replace(",", "."));
 		Double resultado = null;
 
 		switch (operacao) {
@@ -144,13 +141,19 @@ public class CalculadoraWindow extends JFrame {
 		}
 
 		primeiroNumero = null;
+		segundoNumero = null;
 		operacao = null;
 		limparProximoDigito = true;
 	}
 	
 	private void limparCampos() {
 		txtVisor.setText("");
+		primeiroNumero = null;
+		segundoNumero = null;
+		operacao = null;
+		limparProximoDigito = false;
 	}
+	
 	public void iniciarComponentes() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 320, 419);
@@ -208,7 +211,7 @@ public class CalculadoraWindow extends JFrame {
 		
 		btn9 = new JButton("9");
 		btn9.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				adicionarDigito("9");
 			}
 		});
@@ -217,6 +220,11 @@ public class CalculadoraWindow extends JFrame {
 		contentPane.add(btn9);
 		
 		btnDividir = new JButton("/");
+		btnDividir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				escolherOperacao("/");
+			}
+		});
 		btnDividir.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnDividir.setBounds(238, 149, 66, 48);
 		contentPane.add(btnDividir);
@@ -253,6 +261,11 @@ public class CalculadoraWindow extends JFrame {
 		contentPane.add(btn6);
 		
 		btnMultiplicar = new JButton("*");
+		btnMultiplicar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				escolherOperacao("*");
+			}
+		});
 		btnMultiplicar.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnMultiplicar.setBounds(238, 209, 66, 48);
 		contentPane.add(btnMultiplicar);
@@ -289,6 +302,11 @@ public class CalculadoraWindow extends JFrame {
 		contentPane.add(btn3);
 		
 		btnSubtrair = new JButton("-");
+		btnSubtrair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				escolherOperacao("-");
+			}
+		});
 		btnSubtrair.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnSubtrair.setBounds(238, 268, 66, 48);
 		contentPane.add(btnSubtrair);
@@ -327,7 +345,7 @@ public class CalculadoraWindow extends JFrame {
 		btnSomar = new JButton("+");
 		btnSomar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				escolherOperacao("+");;
+				escolherOperacao("+");
 			}
 		});
 		btnSomar.setFont(new Font("Tahoma", Font.PLAIN, 17));
